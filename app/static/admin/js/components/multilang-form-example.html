@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiLangForm Component Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6">Multi-Language Form Example</h1>
+        
+        <!-- Form Container -->
+        <form id="test-form">
+            <!-- Subject Name Fields -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-3">Subject Name</h2>
+                <div id="subject-name-container"></div>
+            </div>
+            
+            <!-- Question Text Fields (Textarea) -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-3">Question Text</h2>
+                <div id="question-text-container"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex space-x-3">
+                <button 
+                    type="button" 
+                    id="validate-btn"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                    Validate
+                </button>
+                
+                <button 
+                    type="button" 
+                    id="get-data-btn"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                >
+                    Get Data
+                </button>
+                
+                <button 
+                    type="button" 
+                    id="set-data-btn"
+                    class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                >
+                    Set Sample Data
+                </button>
+                
+                <button 
+                    type="button" 
+                    id="clear-btn"
+                    class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                >
+                    Clear
+                </button>
+            </div>
+        </form>
+        
+        <!-- Output Display -->
+        <div id="output" class="mt-6 p-4 bg-gray-50 rounded-md hidden">
+            <h3 class="font-semibold mb-2">Output:</h3>
+            <pre id="output-content" class="text-sm overflow-x-auto"></pre>
+        </div>
+    </div>
+    
+    <!-- Load Component -->
+    <script src="multilang-form.js"></script>
+    
+    <!-- Initialize and Demo -->
+    <script>
+        // Initialize subject name form (input fields)
+        const subjectForm = new MultiLangForm('subject-name-container', {
+            fieldName: 'name',
+            fieldType: 'input',
+            label: 'Subject Name',
+            maxLength: 100
+        });
+        
+        // Initialize question text form (textarea fields)
+        const questionForm = new MultiLangForm('question-text-container', {
+            fieldName: 'text',
+            fieldType: 'textarea',
+            label: 'Question Text',
+            maxLength: 1000
+        });
+        
+        // Event listeners for demo buttons
+        document.getElementById('validate-btn').addEventListener('click', () => {
+            const subjectValidation = subjectForm.validate();
+            const questionValidation = questionForm.validate();
+            
+            const output = {
+                subject: subjectValidation,
+                question: questionValidation,
+                overallValid: subjectValidation.valid && questionValidation.valid
+            };
+            
+            showOutput(output);
+        });
+        
+        document.getElementById('get-data-btn').addEventListener('click', () => {
+            const subjectData = subjectForm.getData();
+            const questionData = questionForm.getData();
+            
+            const output = {
+                subject: subjectData,
+                question: questionData
+            };
+            
+            showOutput(output);
+        });
+        
+        document.getElementById('set-data-btn').addEventListener('click', () => {
+            subjectForm.setData({
+                name_en: 'Mathematics',
+                name_uz: 'Matematika',
+                name_ru: 'Математика'
+            });
+            
+            questionForm.setData({
+                text_en: 'What is 2 + 2?',
+                text_uz: '2 + 2 nechaga teng?',
+                text_ru: 'Сколько будет 2 + 2?'
+            });
+            
+            showOutput({ message: 'Sample data has been set!' });
+        });
+        
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            subjectForm.clear();
+            questionForm.clear();
+            
+            showOutput({ message: 'All fields cleared!' });
+        });
+        
+        // Listen to validation events
+        subjectForm.on('validationError', (data) => {
+            console.log('Subject validation error:', data);
+        });
+        
+        subjectForm.on('validationSuccess', () => {
+            console.log('Subject validation success!');
+        });
+        
+        questionForm.on('fieldChanged', (data) => {
+            console.log('Question field changed:', data);
+        });
+        
+        // Helper function to display output
+        function showOutput(data) {
+            const outputDiv = document.getElementById('output');
+            const outputContent = document.getElementById('output-content');
+            
+            outputContent.textContent = JSON.stringify(data, null, 2);
+            outputDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Component Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="notification.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Notification Component Demo</h1>
+        <p class="text-gray-600 mb-8">Test the notification component with different types and options.</p>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 space-y-6">
+            <!-- Basic Notifications -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Basic Notifications</h2>
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="notificationManager.success('Operation completed successfully!')"
+                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                    >
+                        Show Success
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.error('An error occurred. Please try again.')"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Show Error
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.warning('This action cannot be undone.')"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
+                    >
+                        Show Warning
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.info('New updates are available.')"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Show Info
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Custom Duration -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Custom Duration</h2>
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="notificationManager.success('This will dismiss in 1 second', { duration: 1000 })"
+                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                    >
+                        1 Second
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.info('This will dismiss in 5 seconds', { duration: 5000 })"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        5 Seconds
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.warning('This will not auto-dismiss', { duration: 0 })"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
+                    >
+                        No Auto-Dismiss
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Multiple Notifications -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Multiple Notifications</h2>
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="showMultiple()"
+                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                    >
+                        Show Multiple
+                    </button>
+                    
+                    <button 
+                        onclick="notificationManager.dismissAll()"
+                        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                    >
+                        Dismiss All
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Real-World Examples -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Real-World Examples</h2>
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="simulateSave()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Simulate Save
+                    </button>
+                    
+                    <button 
+                        onclick="simulateDelete()"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Simulate Delete
+                    </button>
+                    
+                    <button 
+                        onclick="simulateValidation()"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
+                    >
+                        Simulate Validation Error
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Requirements Info -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-blue-900 mb-2">Requirements Validated</h3>
+            <ul class="text-sm text-blue-800 space-y-1">
+                <li>✓ 12.4: Display success notifications (auto-dismiss after 3 seconds)</li>
+                <li>✓ 12.5: Display error notifications when operations fail</li>
+                <li>✓ 12.6: Auto-dismiss success notifications after 3 seconds</li>
+                <li>✓ 12.7: Keep error notifications visible until dismissed by user</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function showMultiple() {
+            notificationManager.success('First notification');
+            setTimeout(() => notificationManager.info('Second notification'), 200);
+            setTimeout(() => notificationManager.warning('Third notification'), 400);
+        }
+        
+        function simulateSave() {
+            notificationManager.info('Saving changes...');
+            setTimeout(() => {
+                notificationManager.success('Changes saved successfully!');
+            }, 1500);
+        }
+        
+        function simulateDelete() {
+            notificationManager.warning('Deleting item...');
+            setTimeout(() => {
+                notificationManager.success('Item deleted successfully!');
+            }, 1500);
+        }
+        
+        function simulateValidation() {
+            notificationManager.error('Please fill in all required fields before submitting.');
+        }
+    </script>
+</body>
+</html>

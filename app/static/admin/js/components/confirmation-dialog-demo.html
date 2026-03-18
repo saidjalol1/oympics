@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConfirmationDialog Component Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">ConfirmationDialog Component Demo</h1>
+        <p class="text-gray-600 mb-8">Interactive examples of the ConfirmationDialog component</p>
+        
+        <!-- Demo Controls -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Examples</h2>
+            
+            <div class="space-y-4">
+                <!-- Delete Confirmation -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Delete Confirmation</h3>
+                    <p class="text-sm text-gray-600 mb-3">Standard delete confirmation with red button</p>
+                    <button 
+                        id="delete-btn"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Delete Item
+                    </button>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Delete with Cascade Warning -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Delete with Cascade Warning</h3>
+                    <p class="text-sm text-gray-600 mb-3">Delete confirmation with cascade deletion warning</p>
+                    <button 
+                        id="delete-cascade-btn"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Delete Subject
+                    </button>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Warning Dialog -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Warning Dialog</h3>
+                    <p class="text-sm text-gray-600 mb-3">General warning confirmation with yellow button</p>
+                    <button 
+                        id="warning-btn"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
+                    >
+                        Show Warning
+                    </button>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Info Dialog -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Info Dialog</h3>
+                    <p class="text-sm text-gray-600 mb-3">Informational confirmation with blue button</p>
+                    <button 
+                        id="info-btn"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Show Info
+                    </button>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Bulk Delete -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Bulk Delete</h3>
+                    <p class="text-sm text-gray-600 mb-3">Delete multiple items confirmation</p>
+                    <button 
+                        id="bulk-delete-btn"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Delete 5 Items
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Event Log -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Event Log</h2>
+            <div id="event-log" class="space-y-2 max-h-64 overflow-y-auto">
+                <p class="text-sm text-gray-500">Events will appear here...</p>
+            </div>
+            <button 
+                id="clear-log-btn"
+                class="mt-4 px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+            >
+                Clear Log
+            </button>
+        </div>
+    </div>
+    
+    <!-- Load Component -->
+    <script src="confirmation-dialog.js"></script>
+    
+    <!-- Demo Script -->
+    <script>
+        // Event logging
+        function logEvent(type, message) {
+            const log = document.getElementById('event-log');
+            const entry = document.createElement('div');
+            entry.className = 'text-sm p-2 rounded ' + 
+                (type === 'confirm' ? 'bg-green-50 text-green-800' : 'bg-gray-50 text-gray-800');
+            entry.innerHTML = `<strong>${type}:</strong> ${message}`;
+            
+            // Remove placeholder if exists
+            const placeholder = log.querySelector('.text-gray-500');
+            if (placeholder) {
+                placeholder.remove();
+            }
+            
+            log.insertBefore(entry, log.firstChild);
+        }
+        
+        // Clear log
+        document.getElementById('clear-log-btn').addEventListener('click', () => {
+            const log = document.getElementById('event-log');
+            log.innerHTML = '<p class="text-sm text-gray-500">Events will appear here...</p>';
+        });
+        
+        // Example 1: Delete Confirmation
+        document.getElementById('delete-btn').addEventListener('click', () => {
+            const dialog = new ConfirmationDialog({
+                title: 'Delete Item',
+                message: 'Are you sure you want to delete this item? This action cannot be undone.',
+                confirmText: 'Delete',
+                cancelText: 'Cancel',
+                type: 'delete'
+            });
+            
+            dialog.on('confirm', () => {
+                logEvent('confirm', 'Item deleted');
+            });
+            
+            dialog.on('cancel', () => {
+                logEvent('cancel', 'Delete cancelled');
+            });
+            
+            dialog.show();
+        });
+        
+        // Example 2: Delete with Cascade Warning
+        document.getElementById('delete-cascade-btn').addEventListener('click', () => {
+            const dialog = new ConfirmationDialog({
+                title: 'Delete Subject',
+                message: 'Are you sure you want to delete "Mathematics"?',
+                confirmText: 'Delete Subject',
+                cancelText: 'Cancel',
+                type: 'delete',
+                cascadeWarning: 'Warning: Deleting this subject will also delete all its levels, tests, and questions. This action cannot be undone.'
+            });
+            
+            dialog.on('confirm', () => {
+                logEvent('confirm', 'Subject and all related data deleted');
+            });
+            
+            dialog.on('cancel', () => {
+                logEvent('cancel', 'Subject deletion cancelled');
+            });
+            
+            dialog.show();
+        });
+        
+        // Example 3: Warning Dialog
+        document.getElementById('warning-btn').addEventListener('click', () => {
+            const dialog = new ConfirmationDialog({
+                title: 'Unsaved Changes',
+                message: 'You have unsaved changes. Are you sure you want to leave this page?',
+                confirmText: 'Leave Page',
+                cancelText: 'Stay',
+                type: 'warning'
+            });
+            
+            dialog.on('confirm', () => {
+                logEvent('confirm', 'User left page without saving');
+            });
+            
+            dialog.on('cancel', () => {
+                logEvent('cancel', 'User stayed on page');
+            });
+            
+            dialog.show();
+        });
+        
+        // Example 4: Info Dialog
+        document.getElementById('info-btn').addEventListener('click', () => {
+            const dialog = new ConfirmationDialog({
+                title: 'Export Data',
+                message: 'This will export all subjects and their related data to a CSV file. Continue?',
+                confirmText: 'Export',
+                cancelText: 'Cancel',
+                type: 'info'
+            });
+            
+            dialog.on('confirm', () => {
+                logEvent('confirm', 'Data export started');
+            });
+            
+            dialog.on('cancel', () => {
+                logEvent('cancel', 'Export cancelled');
+            });
+            
+            dialog.show();
+        });
+        
+        // Example 5: Bulk Delete
+        document.getElementById('bulk-delete-btn').addEventListener('click', () => {
+            const dialog = new ConfirmationDialog({
+                title: 'Delete Multiple Items',
+                message: 'Are you sure you want to delete 5 selected items?',
+                confirmText: 'Delete All',
+                cancelText: 'Cancel',
+                type: 'delete',
+                cascadeWarning: 'Note: Some items may have related data that will also be deleted.'
+            });
+            
+            dialog.on('confirm', () => {
+                logEvent('confirm', '5 items deleted successfully');
+            });
+            
+            dialog.on('cancel', () => {
+                logEvent('cancel', 'Bulk delete cancelled');
+            });
+            
+            dialog.show();
+        });
+        
+        // Keyboard shortcut demo (Ctrl+D to trigger delete)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                document.getElementById('delete-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>

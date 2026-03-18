@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Responsive Styles -->
+    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+</head>
+<body class="bg-white text-gray-900">
+    <div class="flex h-screen bg-white">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
+            <!-- Sidebar Header -->
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-gray-900">Admin Panel</h1>
+                <p class="text-sm text-gray-500 mt-1">Management</p>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <div class="space-y-1">
+                    <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        User Management
+                    </h3>
+                    <a href="/admin/users" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+                        <span class="inline-block mr-2">👥</span>Users
+                    </a>
+                    <a href="/admin/audit" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+                        <span class="inline-block mr-2">📋</span>Audit Logs
+                    </a>
+                </div>
+                
+                <div class="space-y-1">
+                    <h3 class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Test Management
+                    </h3>
+                    <a href="/admin/subjects" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+                        <span class="inline-block mr-2">📝</span>Subjects
+                    </a>
+                    <a href="/admin/levels" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+                        <span class="inline-block mr-2">📊</span>Levels
+                    </a>
+                    <a href="/admin/tests" class="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+                        <span class="inline-block mr-2">📋</span>Tests
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-gray-200">
+                <button class="w-full px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors text-left" data-action="logout">
+                    <span class="inline-block mr-2">🚪</span>Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Admin Dashboard</h2>
+                    <p class="text-sm text-gray-500 mt-1">Welcome to the admin management panel</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-gray-900" id="current-user-email">Loading...</p>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-auto p-8">
+                <!-- Dashboard Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- User Management Card -->
+                    <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <span class="text-3xl">👥</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">User Management</h3>
+                                <p class="text-sm text-gray-500">Manage platform users and permissions</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="/admin/users" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Manage Users →
+                            </a>
+                            <a href="/admin/audit" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                View Audit Logs →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Test Management Card -->
+                    <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <span class="text-3xl">📝</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Test Management</h3>
+                                <p class="text-sm text-gray-500">Manage subjects, levels, tests, and questions</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="/admin/subjects" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Manage Tests →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats Card -->
+                    <div class="bg-white rounded-lg border border-gray-200 p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <span class="text-3xl">📊</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Quick Stats</h3>
+                                <p class="text-sm text-gray-500">System overview</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Total Users:</span>
+                                <span class="font-medium" id="total-users">Loading...</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Admin Users:</span>
+                                <span class="font-medium" id="admin-users">Loading...</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Total Subjects:</span>
+                                <span class="font-medium" id="total-subjects">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <button onclick="window.location.href='/admin/users'" class="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span class="mr-2">👥</span>
+                            Create User
+                        </button>
+                        <button onclick="window.location.href='/admin/subjects'" class="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span class="mr-2">📝</span>
+                            Create Subject
+                        </button>
+                        <button onclick="window.location.href='/admin/audit'" class="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span class="mr-2">📋</span>
+                            View Audit Logs
+                        </button>
+                        <button onclick="window.location.href='/admin/users'" class="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <span class="mr-2">⚙️</span>
+                            User Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 space-y-2 z-40 pointer-events-none"></div>
+
+    <!-- JavaScript Modules -->
+    <script src="/static/admin/js/mobile-menu.js"></script>
+    <script src="/static/admin/js/state.js"></script>
+    <script src="/static/admin/js/api-client.js"></script>
+    <script src="/static/admin/js/ui-utils.js"></script>
+    <script src="/static/admin/js/user-management.js"></script>
+    <script src="/static/admin/js/audit.js"></script>
+    <script src="/static/admin/js/event-handlers.js"></script>
+    <script src="/static/admin/js/init.js"></script>
+    
+    <script>
+        // Dashboard initialization
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load current user info
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    const emailElement = document.getElementById('current-user-email');
+                    if (emailElement) {
+                        emailElement.textContent = user.email;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading current user:', error);
+            }
+            
+            // Load quick stats
+            loadQuickStats();
+            
+            // Setup logout
+            const logoutBtn = document.querySelector('[data-action="logout"]');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        await fetch('/api/auth/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    } finally {
+                        localStorage.removeItem('access_token');
+                        window.location.href = '/admin/login';
+                    }
+                });
+            }
+        });
+        
+        async function loadQuickStats() {
+            try {
+                // Load user stats
+                const usersResponse = await fetch('/api/admin/users?size=1', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                
+                if (usersResponse.ok) {
+                    const usersData = await usersResponse.json();
+                    document.getElementById('total-users').textContent = usersData.total || 0;
+                }
+                
+                // Load admin user stats
+                const adminUsersResponse = await fetch('/api/admin/users?admin=true&size=1', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                
+                if (adminUsersResponse.ok) {
+                    const adminUsersData = await adminUsersResponse.json();
+                    document.getElementById('admin-users').textContent = adminUsersData.total || 0;
+                }
+                
+                // Load subjects stats
+                const subjectsResponse = await fetch('/api/test-management/subjects?size=1', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                
+                if (subjectsResponse.ok) {
+                    const subjectsData = await subjectsResponse.json();
+                    document.getElementById('total-subjects').textContent = subjectsData.total || 0;
+                }
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                document.getElementById('total-users').textContent = 'Error';
+                document.getElementById('admin-users').textContent = 'Error';
+                document.getElementById('total-subjects').textContent = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>

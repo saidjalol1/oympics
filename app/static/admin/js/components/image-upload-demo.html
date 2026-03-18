@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageUpload Component Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Image Upload Component Demo</h1>
+        
+        <!-- Image Upload Component Container -->
+        <div id="image-upload-container"></div>
+        
+        <!-- Test Buttons -->
+        <div class="mt-6 space-x-3">
+            <button 
+                id="get-images-btn"
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+                Get Images
+            </button>
+            <button 
+                id="validate-btn"
+                class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            >
+                Validate
+            </button>
+            <button 
+                id="clear-btn"
+                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+            >
+                Clear All
+            </button>
+        </div>
+        
+        <!-- Output -->
+        <div id="output" class="mt-6 p-4 bg-gray-50 rounded border border-gray-200 hidden">
+            <h3 class="font-semibold mb-2">Output:</h3>
+            <pre id="output-content" class="text-sm text-gray-700 whitespace-pre-wrap"></pre>
+        </div>
+    </div>
+
+    <script src="image-upload.js"></script>
+    <script>
+        // Initialize the component
+        const imageUpload = new ImageUpload('image-upload-container', {
+            maxImages: 2,
+            maxFileSize: 5242880, // 5MB
+            allowedFormats: ['image/jpeg', 'image/png', 'image/webp'],
+            minDimension: 100,
+            maxDimension: 4000
+        });
+        
+        // Make it globally accessible for the remove buttons
+        window.imageUploadInstance = imageUpload;
+        
+        // Event listeners
+        imageUpload.on('imageAdded', (data) => {
+            console.log('Image added:', data);
+            showOutput(`Image added: ${data.file.name}`);
+        });
+        
+        imageUpload.on('imageRemoved', (data) => {
+            console.log('Image removed:', data);
+            showOutput(`Image removed: ${data.id}`);
+        });
+        
+        imageUpload.on('validationError', (data) => {
+            console.error('Validation error:', data);
+        });
+        
+        // Test buttons
+        document.getElementById('get-images-btn').addEventListener('click', () => {
+            const images = imageUpload.getImages();
+            const imageData = imageUpload.getImageData();
+            
+            const output = {
+                count: images.length,
+                images: imageData.map(img => ({
+                    name: img.file.name,
+                    size: img.file.size,
+                    type: img.file.type,
+                    dimensions: img.dimensions
+                }))
+            };
+            
+            showOutput(JSON.stringify(output, null, 2));
+        });
+        
+        document.getElementById('validate-btn').addEventListener('click', () => {
+            const result = imageUpload.validate();
+            showOutput(JSON.stringify(result, null, 2));
+        });
+        
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            imageUpload.clear();
+            showOutput('All images cleared');
+        });
+        
+        function showOutput(text) {
+            const outputDiv = document.getElementById('output');
+            const outputContent = document.getElementById('output-content');
+            
+            outputContent.textContent = text;
+            outputDiv.classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                outputDiv.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

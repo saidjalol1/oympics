@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Spinner Component Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="loading-spinner.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Loading Spinner Component Demo</h1>
+        <p class="text-gray-600 mb-8">Test the loading spinner component with different loading states.</p>
+        
+        <div class="space-y-6">
+            <!-- Skeleton Screens -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Skeleton Screens</h2>
+                
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <button 
+                        onclick="showListSkeleton()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Show List Skeleton
+                    </button>
+                    
+                    <button 
+                        onclick="showCardSkeleton()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Show Card Skeleton
+                    </button>
+                    
+                    <button 
+                        onclick="showFormSkeleton()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Show Form Skeleton
+                    </button>
+                    
+                    <button 
+                        onclick="loadingSpinner.hideSkeleton('skeleton-container')"
+                        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                    >
+                        Hide Skeleton
+                    </button>
+                </div>
+                
+                <div id="skeleton-container" class="border border-gray-200 rounded-lg p-4 min-h-[200px]">
+                    <p class="text-gray-500 text-center py-8">Click a button above to show skeleton screens</p>
+                </div>
+            </div>
+            
+            <!-- Button Spinners -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Button Spinners</h2>
+                
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        id="save-button"
+                        onclick="simulateButtonLoading('save-button', 'Saving...')"
+                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Save Changes
+                    </button>
+                    
+                    <button 
+                        id="delete-button"
+                        onclick="simulateButtonLoading('delete-button', 'Deleting...')"
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Delete Item
+                    </button>
+                    
+                    <button 
+                        id="submit-button"
+                        onclick="simulateButtonLoading('submit-button', 'Submitting...')"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Submit Form
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Full-Page Overlay -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Full-Page Overlay</h2>
+                
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="showOverlayDemo('Processing your request...')"
+                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                    >
+                        Show Overlay (Default)
+                    </button>
+                    
+                    <button 
+                        onclick="showOverlayDemo('Uploading files...')"
+                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                    >
+                        Show Overlay (Custom Message)
+                    </button>
+                    
+                    <button 
+                        onclick="loadingSpinner.hideOverlay()"
+                        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                    >
+                        Hide Overlay
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Real-World Scenarios -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Real-World Scenarios</h2>
+                
+                <div class="flex flex-wrap gap-3">
+                    <button 
+                        onclick="simulatePageLoad()"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                        Simulate Page Load
+                    </button>
+                    
+                    <button 
+                        onclick="simulateFormSubmit()"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                        Simulate Form Submit
+                    </button>
+                    
+                    <button 
+                        onclick="simulateBulkOperation()"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                        Simulate Bulk Operation
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Requirements Info -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-blue-900 mb-2">Requirements Validated</h3>
+            <ul class="text-sm text-blue-800 space-y-1">
+                <li>✓ 12.1: Display skeleton screens during data loading</li>
+                <li>✓ 12.2: Display spinner on submit buttons during processing</li>
+                <li>✓ 12.3: Display progress indicator for bulk operations (overlay spinner)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function showListSkeleton() {
+            loadingSpinner.showSkeleton('skeleton-container', { type: 'list', rows: 3 });
+        }
+        
+        function showCardSkeleton() {
+            loadingSpinner.showSkeleton('skeleton-container', { type: 'card', rows: 3 });
+        }
+        
+        function showFormSkeleton() {
+            loadingSpinner.showSkeleton('skeleton-container', { type: 'form', rows: 4 });
+        }
+        
+        function simulateButtonLoading(buttonId, text) {
+            loadingSpinner.showButtonSpinner(buttonId, { text });
+            
+            setTimeout(() => {
+                loadingSpinner.hideButtonSpinner(buttonId);
+            }, 2000);
+        }
+        
+        function showOverlayDemo(message) {
+            loadingSpinner.showOverlay({ message });
+            
+            setTimeout(() => {
+                loadingSpinner.hideOverlay();
+            }, 3000);
+        }
+        
+        function simulatePageLoad() {
+            // Show skeleton
+            loadingSpinner.showSkeleton('skeleton-container', { type: 'list', rows: 5 });
+            
+            // Simulate data loading
+            setTimeout(() => {
+                loadingSpinner.hideSkeleton('skeleton-container');
+                
+                // Add actual content
+                const container = document.getElementById('skeleton-container');
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-gray-900">Item 1</h3>
+                            <p class="text-sm text-gray-600">This is the loaded content</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-gray-900">Item 2</h3>
+                            <p class="text-sm text-gray-600">This is the loaded content</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-gray-900">Item 3</h3>
+                            <p class="text-sm text-gray-600">This is the loaded content</p>
+                        </div>
+                    </div>
+                `;
+            }, 2000);
+        }
+        
+        function simulateFormSubmit() {
+            const buttonId = 'submit-button';
+            loadingSpinner.showButtonSpinner(buttonId, { text: 'Submitting...' });
+            
+            setTimeout(() => {
+                loadingSpinner.hideButtonSpinner(buttonId);
+            }, 2000);
+        }
+        
+        function simulateBulkOperation() {
+            loadingSpinner.showOverlay({ message: 'Deleting 15 items...' });
+            
+            setTimeout(() => {
+                loadingSpinner.hideOverlay();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Access Forbidden</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .lock-animation {
+            animation: lock 2s ease-in-out infinite;
+        }
+        @keyframes lock {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md fade-in">
+        <!-- Error Card -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Header Section -->
+            <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 px-8 py-12">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-4 lock-animation">
+                        <svg class="w-10 h-10 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="px-8 py-8">
+                <div class="text-center">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Access Forbidden</h1>
+                    <p class="text-gray-600 mb-6">
+                        You don't have permission to access this resource. Your account may not have the required privileges.
+                    </p>
+
+                    <!-- Illustration -->
+                    <div class="mb-8">
+                        <svg class="w-32 h-32 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Status Message -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                        <p class="text-sm text-yellow-800">
+                            <strong>Reason:</strong> Insufficient permissions to access this resource.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <a
+                            href="/admin"
+                            class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition duration-200"
+                        >
+                            Go to Admin Panel
+                        </a>
+                        <a
+                            href="/admin/login"
+                            class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2.5 rounded-lg transition duration-200"
+                        >
+                            Back to Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-8 py-4 border-t border-gray-200">
+                <p class="text-xs text-gray-600 text-center">
+                    Error Code: 403 | Access Forbidden
+                </p>
+            </div>
+        </div>
+
+        <!-- Help Text -->
+        <div class="mt-6 text-center text-sm text-gray-600">
+            <p>If you believe you should have access, please contact your administrator.</p>
+        </div>
+    </div>
+</body>
+</html>
