@@ -26,6 +26,7 @@ from app.repositories.test_repository import TestRepository
 from app.repositories.question_repository import QuestionRepository
 from app.repositories.question_option_repository import QuestionOptionRepository
 from app.api.deps import get_current_user
+from app.repositories.payment_repository import PaymentRepository
 
 router = APIRouter(prefix="/api/client", tags=["client"])
 
@@ -269,30 +270,33 @@ async def get_tests(
 async def get_test_detail(
     test_id: int,
     request: Request,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Get a single test with all its questions and options.
-    
-    Args:
-        test_id: Test ID
-        
-    Language is extracted from Accept-Language header (defaults to 'en').
-        
-    Returns:
-        Test details including all questions with their options in requested language
-        
-    Raises:
-        HTTPException: 404 if test not found
+
+    Requires authentication. For paid tests, the user must have a completed
+    payment before questions are returned.
     """
     language = get_language_from_header(request)
     test_repo = TestRepository(db)
     question_repo = QuestionRepository(db)
     option_repo = QuestionOptionRepository(db)
-    
+
     # Get the test
     test = await test_repo.get_by_id(test_id)
     if not test:
         raise HTTPException(status_code=404, detail="Test not found")
+
+    # Payment gate: if test has a price > 0, verify the user has paid
+    if float(test.price) > 0:
+        payment_repo = PaymentRepository(db)
+        paid = await payment_repo.get_completed_payment(current_user.id, test_id)
+        if not paid:
+            raise HTTPException(
+                status_code=402,
+                detail="Payment required. Please complete payment to access this test.",
+            )
     
     # Get test name in requested language
     test_name = getattr(test, f'name_{language}', test.name_en)

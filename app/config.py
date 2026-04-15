@@ -57,6 +57,12 @@ class Settings(BaseSettings):
     smtp_password: str = Field(..., description="SMTP authentication password")
     smtp_from_email: str = Field(..., description="Email address for outgoing emails")
     
+    # Click Payment settings
+    click_service_id: int = Field(default=99674, description="Click service ID")
+    click_merchant_id: int = Field(default=59143, description="Click merchant ID")
+    click_secret_key: str = Field(default="0MIYh977pjNF6", description="Click secret key")
+    click_merchant_user_id: int = Field(default=81820, description="Click merchant user ID")
+
     # Frontend settings
     frontend_url: str = Field(
         default="http://localhost:3000",

@@ -34,12 +34,9 @@ Base = declarative_base()
 
 
 async def init_db() -> None:
-    """
-    Initialize database by creating all tables.
-    
-    This function should be called on application startup to ensure
-    all database tables are created according to the defined models.
-    """
+    """Initialize database by creating all tables."""
+    # Import all models so their tables are registered with Base.metadata
+    import app.models  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

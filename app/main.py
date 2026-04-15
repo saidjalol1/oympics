@@ -19,6 +19,7 @@ from app.api import auth
 from app.api import admin
 from app.api import test_management
 from app.api import client
+from app.api import payment
 
 from app.api.deps import get_current_admin_user
 from app.core.exceptions import AuthException, AuthenticationError, AuthorizationError
@@ -27,6 +28,7 @@ from app.database import init_db
 from app.i18n.language import detect_language
 from app.i18n.translations import TranslationManager
 from app.models.user import User
+from app.config import settings
 
 # Configure logging
 logging.basicConfig(
@@ -66,12 +68,30 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Add CORS middleware
+# When credentials (cookies) are used, allow_origins cannot be ["*"]
+# FRONTEND_URL from .env is used as the allowed origin
+_allowed_origins = [
+    # Production frontends
+    "https://www.turonolympiad.uz",
+    "https://turonolympiad.uz",
+    "http://edumasterruz.vercel.app",
+    "https://edumasterruz.vercel.app",
+    # Local development
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "http://127.0.0.1:3000",
+]
+# Also include whatever is set in .env
+if settings.frontend_url and settings.frontend_url not in _allowed_origins:
+    _allowed_origins.append(settings.frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type", "Accept-Language"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Accept-Language", "Authorization"],
 )
 
 
@@ -205,6 +225,7 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 app.include_router(test_management.router)
 app.include_router(client.router)
+app.include_router(payment.router)
 
 # Add login page route (GET /admin/login)
 @app.get("/admin/login", include_in_schema=False)
